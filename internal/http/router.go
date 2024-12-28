@@ -3,6 +3,8 @@ package http
 import (
 	"database/sql"
 	"github.com/Juram09/Weather-Predictor/internal/controllers"
+	"github.com/Juram09/Weather-Predictor/internal/repository"
+	"github.com/Juram09/Weather-Predictor/internal/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,21 +13,24 @@ type Router interface {
 }
 type router struct {
 	eng *gin.Engine
-	rg  *gin.RouterGroup
 	db  *sql.DB
 }
 
 func (r *router) MapRoutes() {
-	r.setGroup()
+	r.addSystemPaths()
 	r.buildRoutes()
 }
-func (r *router) setGroup() {
-	r.rg = r.eng.Group("/v1")
-}
+
 func (r *router) buildRoutes() {
-	r.addSystemPaths()
-	//All routes
+	weatherRepository := repository.NewWeatherRepository(r.db)
+	weatherService := service.NewWeather(weatherRepository)
+	weatherController := controllers.NewWeather(weatherService)
+	r.eng.GET("/weather", weatherController.GetWeather())
+	r.eng.GET("/weather/drought", weatherController.GetDrought())
+	r.eng.GET("/weather/rainy", weatherController.GetRainy())
+	r.eng.GET("/weather/optimal", weatherController.GetOptimal())
 }
+
 func (r *router) addSystemPaths() {
-	r.rg.GET("/ping", controllers.Ping())
+	r.eng.GET("/ping", controllers.Ping())
 }

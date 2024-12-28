@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/Juram09/Weather-Predictor/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
