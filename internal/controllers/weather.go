@@ -28,7 +28,7 @@ func NewWeather(weatherService service.IWeather) IWeather {
 func (w *weather) GetDrought() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		years, err := strconv.Atoi(c.Query("years"))
-		if err != nil {
+		if err != nil && years > 0 {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid years",
 			})
@@ -44,7 +44,7 @@ func (w *weather) GetDrought() gin.HandlerFunc {
 func (w *weather) GetRainy() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		years, err := strconv.Atoi(c.Query("years"))
-		if err != nil {
+		if err != nil && years > 0 {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid years",
 			})
@@ -62,7 +62,7 @@ func (w *weather) GetRainy() gin.HandlerFunc {
 func (w *weather) GetOptimal() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		years, err := strconv.Atoi(c.Query("years"))
-		if err != nil {
+		if err != nil && years > 0 {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid years",
 			})
@@ -78,7 +78,7 @@ func (w *weather) GetOptimal() gin.HandlerFunc {
 func (w *weather) GetWeather() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		day, err := strconv.Atoi(c.Query("day"))
-		if err != nil {
+		if err != nil && day >= 0 {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid day",
 			})

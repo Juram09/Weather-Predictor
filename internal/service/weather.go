@@ -27,7 +27,7 @@ func NewWeather(weatherRepository repository.IWeather) IWeather {
 
 func (w *weather) GetDrought(years int) int {
 	droughtPeriods := 0
-	for i := 1; i <= defines.YearDuration*years; i++ {
+	for i := 0; i <= defines.YearDuration*years; i++ {
 		if w.GetWeather(i) == defines.Drought {
 			droughtPeriods++
 		}
